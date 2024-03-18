@@ -5,7 +5,7 @@ import io.javalin.Javalin;
 public class App {
     public static void main(String[] args) {
         var app = getApp();
-        app.get("/", ctx -> ctx.result("Hello Хрюша"));
+        app.get("/", ctx -> ctx.result("Hello Hrusha"));
         app.start(7070);
     }
 
