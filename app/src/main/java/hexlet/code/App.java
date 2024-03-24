@@ -28,7 +28,7 @@ public class App {
 
     public static void main(String[] args) throws SQLException, IOException {
         var app = getApp();
-        app.get("/", ctx -> ctx.result("Hello Hrusha"));
+        app.get("/", ctx -> ctx.result("Hello Hrusha!!"));
         app.start(getPort());
     }
 
