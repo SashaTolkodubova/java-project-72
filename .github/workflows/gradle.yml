@@ -12,7 +12,7 @@ jobs:
           distribution: 'oracle'
           java-version: '21'
       - name: Build with Gradle
-        uses: gradle/gradle-build-action@v2
+        uses: gradle/gradle-build-action@v3
         with:
           arguments: build
           build-root-directory: app

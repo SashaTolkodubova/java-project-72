@@ -41,7 +41,7 @@ public class App {
         var sql = readResourceFile("schema.sql");
 
         try (var connection = dataSourse.getConnection();
-        var statement = connection.createStatement()) {
+             var statement = connection.createStatement()) {
             statement.execute(sql);
         }
 
@@ -51,5 +51,7 @@ public class App {
             config.bundledPlugins.enableDevLogging();
         });
         return app;
-    };
+    }
+
+    ;
 }
