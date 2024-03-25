@@ -11,11 +11,13 @@ jobs:
         with:
           distribution: 'oracle'
           java-version: '21'
+
       - name: Build with Gradle
         uses: gradle/gradle-build-action@v3
         with:
           arguments: build
           build-root-directory: app
+
       - name: Publish code coverage
         uses: paambaati/codeclimate-action@v5.0.0
         env:
