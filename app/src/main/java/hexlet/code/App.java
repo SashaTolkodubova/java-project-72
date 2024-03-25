@@ -16,7 +16,7 @@ public class App {
     public static void main(String[] args) throws Exception {
         var app = getApp();
         app.get("/", ctx -> ctx.result("Hello World"));
-        app.start(7070);
+        app.start(getPort());
 
     }
 
@@ -43,5 +43,10 @@ public class App {
 
     private static String getDataBaseUrl() {
         return System.getenv().getOrDefault("JDBC_DATABASE_URL", "jdbc:h2:mem:project;DB_CLOSE_DELAY=-1;");
+    }
+
+    private static int getPort() {
+        String port = System.getenv().getOrDefault("PORT", "7070");
+        return Integer.valueOf(port);
     }
 }
