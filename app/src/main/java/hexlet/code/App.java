@@ -14,8 +14,12 @@ import io.javalin.Javalin;
 import io.javalin.rendering.template.JavalinJte;
 import lombok.extern.slf4j.Slf4j;
 
+
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.charset.StandardCharsets;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
@@ -49,6 +53,7 @@ public class App {
         app.post(NamedRoutes.urlsPath(), UrlsController::save);
         app.get(NamedRoutes.urlsPath(), UrlsController::index);
         app.get(NamedRoutes.urlPath("{id}"), UrlController::show);
+        app.post(NamedRoutes.toCheckPath("{id}"), UrlController::checkUrl);
 
         return app;
     }
@@ -67,5 +72,17 @@ public class App {
         ResourceCodeResolver codeResolver = new ResourceCodeResolver("templates", classLoader);
         TemplateEngine templateEngine = TemplateEngine.create(codeResolver, ContentType.Html);
         return templateEngine;
+    }
+
+    public static String readResourceFile(String filePath) throws IOException {
+        var inputStream = Optional.ofNullable(App.class.getClassLoader().getResourceAsStream(filePath));
+        if (inputStream.isEmpty()) {
+            throw new IOException();
+        }
+        var streamReader = new InputStreamReader(inputStream.get(), StandardCharsets.UTF_8);
+
+        try (BufferedReader reader = new BufferedReader(streamReader)) {
+            return reader.lines().collect(Collectors.joining("\n"));
+        }
     }
 }

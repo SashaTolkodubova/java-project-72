@@ -7,6 +7,7 @@ import java.sql.Statement;
 import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 public class UrlRepository extends BaseRepository {
@@ -68,5 +69,11 @@ public class UrlRepository extends BaseRepository {
             }
             return false;
         }
+    }
+
+    public static Url findByName(String urlName) throws SQLException {
+        List<Url> urls = getEntities();
+        return urls.stream().filter(url -> url.getName().equals(urlName)).findFirst()
+                .orElseThrow(NoSuchElementException::new);
     }
 }
