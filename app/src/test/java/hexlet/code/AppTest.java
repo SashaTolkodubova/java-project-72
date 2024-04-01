@@ -1,12 +1,20 @@
 package hexlet.code;
 
+import hexlet.code.model.Url;
 import hexlet.code.repository.UrlRepository;
 import hexlet.code.util.NamedRoutes;
 import io.javalin.Javalin;
-import org.junit.jupiter.api.Assertions;
+import okhttp3.mockwebserver.MockResponse;
+import okhttp3.mockwebserver.MockWebServer;
+
+import io.javalin.testtools.JavalinTest;
+import org.junit.jupiter.api.AfterAll;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import io.javalin.testtools.JavalinTest;
+import org.junit.jupiter.api.Assertions;
+import java.io.IOException;
+import java.sql.SQLException;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
@@ -14,6 +22,20 @@ import static org.assertj.core.api.Assertions.assertThat;
 public class AppTest {
 
     private Javalin app;
+    private static MockWebServer mockWebServer;
+
+    @BeforeAll
+    public static void mockStart() throws IOException {
+        mockWebServer = new MockWebServer();
+        var mockResponse = new MockResponse().setBody(App.readResourceFile("fixtures/rootPage.html"));
+        mockWebServer.enqueue(mockResponse);
+        mockWebServer.start();
+    }
+
+    @AfterAll
+    public static void mockStop() throws IOException {
+        mockWebServer.shutdown();
+    }
 
     @BeforeEach
     public final void setUp() throws Exception {
@@ -48,6 +70,17 @@ public class AppTest {
             Assertions.assertTrue(UrlRepository.isExist("https://www.example.com"));
             assertThat(response1.code()).isEqualTo(200);
             assertThat(response1.body().string()).contains("https://www.example.com");
+        });
+    }
+
+    @Test
+    public void testUrlCheck() throws SQLException {
+        Url url = new Url(mockWebServer.url("/").toString());
+        UrlRepository.save(url);
+        Url savedUrl = UrlRepository.findByName(mockWebServer.url("/").toString());
+        JavalinTest.test(app, (server, client) -> {
+            var response = client.post("/" + NamedRoutes.toCheckPath(savedUrl.getId()));
+            assertThat(response.code()).isEqualTo(200);
         });
     }
 }

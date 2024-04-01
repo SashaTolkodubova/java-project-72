@@ -30,6 +30,9 @@ dependencies {
     implementation("com.h2database:h2:2.2.220")
     implementation("org.postgresql:postgresql:42.7.2")
     testImplementation("org.assertj:assertj-core:3.25.3")
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.12.0'
+
+    implementation 'com.konghq:unirest-java:4.0.0-RC2'
 }
 
 test {

@@ -54,4 +54,5 @@ public class UrlsController {
         String port = url.getPort() == -1 ? "" : ":" + url.getPort();
         return String.format("%s://%s%s", protocol, host, port);
     }
+
 }
