@@ -49,7 +49,7 @@ content = @`
                         <tr>
                             <td>${urlCheck.getId()}</td>
                             <td>${urlCheck.getStatusCode()}</td>
-                            <td>${urlCheck.getDescription()}</td>
+                            <td>${urlCheck.getTitle()}</td>
                             <td>${urlCheck.getH1()}</td>
                             <td>${urlCheck.getDescription()}</td>
                             <td>${urlCheck.getCreatedAt().toString()}</td>

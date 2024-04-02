@@ -1,6 +1,7 @@
 package hexlet.code;
 
 import hexlet.code.model.Url;
+import hexlet.code.repository.UrlChecksRepository;
 import hexlet.code.repository.UrlRepository;
 import hexlet.code.util.NamedRoutes;
 import io.javalin.Javalin;
@@ -13,6 +14,7 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.Assertions;
+
 import java.io.IOException;
 import java.sql.SQLException;
 
@@ -81,6 +83,9 @@ public class AppTest {
         JavalinTest.test(app, (server, client) -> {
             var response = client.post("/" + NamedRoutes.toCheckPath(savedUrl.getId()));
             assertThat(response.code()).isEqualTo(200);
+            var lastCheck = UrlChecksRepository.getLastCheck(savedUrl.getId());
+            assertThat(lastCheck.getTitle()).isEqualTo("Анализатор страниц");
+            assertThat(lastCheck.getDescription()).isEqualTo("This is content");
         });
     }
 }
