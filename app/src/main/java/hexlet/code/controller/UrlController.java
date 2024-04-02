@@ -7,7 +7,11 @@ import hexlet.code.repository.UrlRepository;
 import hexlet.code.util.NamedRoutes;
 import io.javalin.http.Context;
 import io.javalin.http.NotFoundResponse;
+import kong.unirest.HttpResponse;
 import kong.unirest.Unirest;
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
 
 import java.sql.SQLException;
 import java.util.Collections;
@@ -27,9 +31,15 @@ public class UrlController {
         var url = UrlRepository.find(id).orElseThrow(() -> new NotFoundResponse("Url not found"));
         var urlAdress = url.getName();
         try {
-            var result = Unirest.get(urlAdress).asString();
-            var statusCode = result.getStatus();
-            UrlCheck urlCheck = new UrlCheck(statusCode, null, null, null, id);
+            HttpResponse<String> response = Unirest.get(urlAdress).asString();
+            Document doc = Jsoup.parse(response.getBody());
+            var statusCode = response.getStatus();
+            String title = doc.title();
+            String h1 = doc.selectFirst("h1") == null ? null : doc.selectFirst("h1").text();
+            Element elementDescription = doc.selectFirst("meta[name=description]");
+            String description = elementDescription == null ? null : elementDescription.attr("content");
+
+            UrlCheck urlCheck = new UrlCheck(statusCode, title, h1, description, id);
             UrlChecksRepository.save(urlCheck);
             ctx.sessionAttribute("flash", "Страница успешно проверена");
             ctx.sessionAttribute("flashType", "success");
