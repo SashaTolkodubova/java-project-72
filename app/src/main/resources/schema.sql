@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS url_check;
-DROP TABLE IF EXISTS urls;
+DROP TABLE IF EXISTS url_check cascade;
+DROP TABLE IF EXISTS urls cascade;
 
 CREATE TABLE urls (
 id serial PRIMARY KEY NOT NULL,
@@ -14,6 +14,5 @@ status_code INT,
 title varchar(255),
 h1 varchar(255),
 description TEXT,
-FOREIGN KEY (url_id) REFERENCES urls (id),
 created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP NOT NULL
 );
