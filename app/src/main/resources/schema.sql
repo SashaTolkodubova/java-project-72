@@ -1,5 +1,5 @@
-DROP TABLE IF EXISTS url_check CASCADE;
-DROP TABLE IF EXISTS urls CASCADE;
+DROP TABLE IF EXISTS url_check cascade;
+DROP TABLE IF EXISTS urls cascade;
 
 CREATE TABLE urls (
 id serial NOT NULL,
