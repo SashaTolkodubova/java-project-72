@@ -12,7 +12,7 @@ import java.util.NoSuchElementException;
 
 public class UrlChecksRepository extends BaseRepository {
     public static void save(UrlCheck urlCheck) throws SQLException {
-        String sql = "INSERT INTO url_check (status_code, title, h1, description, url_id, created_at) "
+        String sql = "INSERT INTO url_checks (status_code, title, h1, description, url_id, created_at) "
                 + "VALUES (?, ?, ?, ?, ?, ?)";
         try (var conn = dataSource.getConnection();
              var preparedStatement = conn.prepareStatement(sql, Statement.RETURN_GENERATED_KEYS)) {
@@ -27,7 +27,7 @@ public class UrlChecksRepository extends BaseRepository {
     }
 
     public static List<UrlCheck> getUrlChecks(Long id) throws SQLException {
-        var sql = "SELECT * FROM url_check WHERE url_id = ?";
+        var sql = "SELECT * FROM url_checks WHERE url_id = ?";
         try (var conn = dataSource.getConnection();
              var stmt = conn.prepareStatement(sql)) {
             stmt.setLong(1, id);
