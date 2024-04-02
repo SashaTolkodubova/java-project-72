@@ -19,18 +19,19 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
+import java.sql.SQLException;
 import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Slf4j
 public class App {
 
-    public static void main(String[] args) throws Exception {
+    public static void main(String[] args) throws SQLException, IOException {
         var app = getApp();
         app.start(getPort());
     }
 
-    public static Javalin getApp() throws Exception {
+    public static Javalin getApp() throws IOException, SQLException {
         var hikariConfig = new HikariConfig();
         hikariConfig.setJdbcUrl(getDataBaseUrl());
         var dataSource = new HikariDataSource(hikariConfig);
